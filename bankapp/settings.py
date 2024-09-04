@@ -4,22 +4,21 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i^zg8n-id3y*y*gt3v=v_d_$c(a)rxpi*fhh)+cvl=dv4_mq27'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'assets',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -42,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'testpostgres.urls'
+ROOT_URLCONF = 'bankapp.urls'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
@@ -64,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'testpostgres.wsgi.application'
+WSGI_APPLICATION = 'bankapp.wsgi.application'
 
 
 # Database
