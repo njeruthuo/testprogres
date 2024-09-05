@@ -18,7 +18,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'assets',
+    'asset',
+    'users',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -69,24 +70,24 @@ WSGI_APPLICATION = 'bankapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  os.environ.get("NAME"),
-        'PORT': os.environ.get("PORT"),
-        'HOST': os.environ.get("HOST"),
-        'USERNAME': os.environ.get("USERNAME"),
-        'PASSWORD': os.environ.get("PASSWORD"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':  os.environ.get("NAME"),
+#         'PORT': os.environ.get("PORT"),
+#         'HOST': os.environ.get("HOST"),
+#         'USERNAME': os.environ.get("USERNAME"),
+#         'PASSWORD': os.environ.get("PASSWORD"),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -128,3 +129,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+}
+
+AUTHENTICATION_BACKENDS = [
+    'users.authentication.EmailAuthentication',
+    'django.contrib.auth.backends.ModelBackend',
+]
