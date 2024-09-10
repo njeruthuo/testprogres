@@ -15,11 +15,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Application definition
 INSTALLED_APPS = [
     'asset',
     'users',
+    'clients',
+    'loan',
+    'remedial',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -44,8 +51,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bankapp.urls'
 
+# APPEND_SLASH = False
+
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:5173'
 ]
 
 TEMPLATES = [
@@ -141,3 +150,7 @@ AUTHENTICATION_BACKENDS = [
     'users.authentication.EmailAuthentication',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+MEDIA_URL = 'media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'

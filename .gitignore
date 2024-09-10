@@ -4,3 +4,4 @@
 venv/
 bankapp.sql
 .venv/
+*.pdf

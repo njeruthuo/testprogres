@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 # Create your views here.
 
 from .serializers import UserModelSerializer
+from .authentication import TokenAuthentication
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -21,6 +22,7 @@ user_create_view = UserCreateAPIView.as_view()
 
 class UserLoginAPIView(APIView):
     serializer_class = UserModelSerializer
+    # permission_classes = [TokenAuthentication]
 
     def post(self, request, *args, **kwargs):
         # Get data from the request

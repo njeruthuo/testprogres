@@ -3,6 +3,13 @@ from django.contrib.auth.backends import ModelBackend
 from django.core.exceptions import MultipleObjectsReturned
 
 
+from rest_framework.authentication import TokenAuthentication as BaseTokenAuth
+
+
+class TokenAuthentication(BaseTokenAuth):
+    keyword = "Bearer"
+
+
 class EmailAuthentication(ModelBackend):
     """
     Custom authentication backend that allows users to log in with either
