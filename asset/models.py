@@ -25,12 +25,25 @@ class Asset(models.Model):
     def __str__(self) -> str:
         return self.vehicle_reg_no
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['asset_status']),
+            models.Index(fields=['vehicle_reg_no']),
+            models.Index(fields=['make_and_model']),
+            models.Index(fields=['tracking_status']),
+            models.Index(fields=['vehicle_reg_no',
+                         'tracking_status', 'asset_status', 'make_and_model']),
+        ]
+
 
 class AssetRegister(models.Model):
     asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
-    remedial = models.ForeignKey(Remedial, on_delete=models.CASCADE)
+    client = models.ForeignKey(
+        Client, on_delete=models.CASCADE, null=True, blank=True)
+    loan = models.ForeignKey(
+        Loan, on_delete=models.CASCADE, null=True, blank=True)
+    remedial = models.ForeignKey(
+        Remedial, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.asset.vehicle_reg_no

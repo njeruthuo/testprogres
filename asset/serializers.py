@@ -95,3 +95,5 @@ class AssetRegisterSerializer(serializers.ModelSerializer):
         )
 
         return asset_register
+
+

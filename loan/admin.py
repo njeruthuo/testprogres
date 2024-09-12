@@ -12,7 +12,7 @@ class LoanRequirementInline(admin.TabularInline):
 
 @admin.register(Loan)
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ['loan_id', 'loan_status',
+    list_display = ['loan_batch_number', 'loan_status',
                     'loan_start_date', 'loan_end_date']
     inlines = [LoanRequirementInline]
 
