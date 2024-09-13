@@ -180,19 +180,55 @@ class AssetRegisterV2(APIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('id')
 
-        if pk is not None:
-            asset = get_object_or_404(AssetRegister, pk=pk)
-            obj_serializer = AssetRegisterSerializer(asset)
-            return Response(obj_serializer.data, status=status.HTTP_200_OK)
-
-        # Pagination parameters
         page = request.query_params.get('page', 1)
-        page_size = request.query_params.get('page_size', 10)
+        page_size = request.query_params.get('page_size', 20)
 
         try:
             page_size = int(page_size)
         except ValueError:
             page_size = 10  # Default value if page_size is invalid
+
+        if pk is not None:
+            asset = get_object_or_404(AssetRegister, pk=pk)
+            obj_serializer = AssetRegisterSerializer(asset)
+            return Response(obj_serializer.data, status=status.HTTP_200_OK)
+
+         # Extract the search query parameter
+        search_query = request.query_params.get('search', None)
+
+        print(search_query)
+
+        # If a search query is provided, filter the queryset
+        if search_query:
+            assets = AssetRegister.objects.filter(
+                asset__vehicle_reg_no__icontains=search_query)
+
+            """Add pagination to the search function"""
+            paginator = Paginator(assets, page_size)
+
+            try:
+                assets_page = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                assets_page = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range, deliver last page of results.
+                assets_page = paginator.page(paginator.num_pages)
+
+            """Return a serialized object of the same"""
+            obj_serializer = AssetRegisterSerializer(assets_page, many=True)
+            return Response({'results': obj_serializer.data,
+                             'count': paginator.count,
+                              'total_pages': paginator.num_pages,
+                              'current_page': assets_page.number,
+                              'next': assets_page.has_next() and request.build_absolute_uri('?page=' + str(assets_page.next_page_number())) or None,
+                              'previous': assets_page.has_previous() and request.build_absolute_uri('?page=' + str(assets_page.previous_page_number())) or None
+                             },
+                            status=status.HTTP_200_OK)
+
+        else:
+            assets = AssetRegister.objects.all()
+        # Pagination parameters
 
         assets = AssetRegister.objects.all()
         paginator = Paginator(assets, page_size)

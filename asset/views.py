@@ -1,5 +1,7 @@
+from django.db.models import Count, Case, When, Q
 from rest_framework import status, generics
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .serializers import AssetSerializer
 from .models import Asset
@@ -33,3 +35,14 @@ class AssetAPIView(generics.ListCreateAPIView):
 
 
 asset_api_view = AssetAPIView.as_view()
+
+
+class AssetStatusAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+
+        status_counts = Asset.objects.values(
+            'asset_status').annotate(count=Count('id'))
+
+        print(status_counts)
+
+        return Response(list(status_counts), status=status.HTTP_200_OK)
